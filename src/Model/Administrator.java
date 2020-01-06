@@ -10,8 +10,14 @@ package Model;
  * @author Matthew
  */
 public class Administrator extends User {
-    public Administrator(String userid ,String firstname ,String surname, String address)
+    public Administrator(Integer usernum ,String firstname ,String surname, String address, String password)
     {
-        super(userid ,firstname ,surname, address);
+        super(usernum ,firstname ,surname, address, password);
+    }
+    
+    @Override
+    public char getType()
+    {
+        return 'A';
     }
 }

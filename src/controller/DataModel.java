@@ -6,6 +6,7 @@
 package controller;
 
 import Model.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,7 +17,7 @@ public class DataModel {
     
     private static DataModel instance;
     
-    private User[] users;
+    private ArrayList<User> users = new ArrayList<User>();
     
     private DataModel()
     {
@@ -50,5 +51,29 @@ public class DataModel {
         }
         //we might find ourselves here if no users exsist. better return null just to be safe.
         return null;
+    }
+    
+    public boolean addUser(User user)
+    {
+        for(User u : users) {
+            if (u.getId().equals(user.getId())) {
+                return false;
+            }
+        }
+        users.add(user);
+        return true;
+    }
+    
+    public Integer getHighestUserNum(char type)
+    {
+        Integer maxnum = 0;
+        
+        for (User u: users)
+        {
+            if (u.getNum() > maxnum & u.getType() == type)
+                maxnum = u.getNum();
+        }
+        
+        return maxnum;
     }
 }

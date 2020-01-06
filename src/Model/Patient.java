@@ -10,8 +10,14 @@ package Model;
  * @author Matthew
  */
 public class Patient extends User{
-    public Patient(String userid ,String firstname ,String surname, String address)
+    public Patient(Integer usernum ,String firstname ,String surname, String address, String password)
     {
-        super(userid ,firstname ,surname, address);
+        super(usernum ,firstname ,surname, address, password);
+    }
+    
+    @Override
+    public char getType()
+    {
+        return 'A';
     }
 }

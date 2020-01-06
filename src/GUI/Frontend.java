@@ -6,6 +6,10 @@
 package GUI;
 
 import java.awt.*;
+import controller.*;
+import Model.*;
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 /**
  *
@@ -13,6 +17,8 @@ import java.awt.*;
  */
 public class Frontend extends javax.swing.JFrame {
 
+    User currentUser;
+    
     /**
      * Creates new form Frontend
      */
@@ -22,25 +28,24 @@ public class Frontend extends javax.swing.JFrame {
     
     private void doLogin(String userid, String password)
     {
+        DataModel data = DataModel.getInstance();
+        
+        this.currentUser = data.processLogin(userid, password);
+        if(this.currentUser == null)
+        {//If login fails abort panel switch
+            return;
+        }
+        
         CardLayout card = (CardLayout)mainPanel.getLayout();
                 
-        switch (userid.charAt(0))
-        {
-            case 'A':
-                card.show(mainPanel, "AdminView");
-                break;
-            case 'D':
-                card.show(mainPanel, "DoctorView");
-                break;
-            case 'P':
-                card.show(mainPanel, "PatientView");
-                break;
-            case 'S':
-                card.show(mainPanel, "SecretaryView");
-                break;
-            default:
-                break;
-        }
+        if (this.currentUser instanceof Administrator)
+            card.show(mainPanel, "AdminView");
+        else if (this.currentUser instanceof Doctor)
+            card.show(mainPanel, "DoctorView");
+        else if (this.currentUser instanceof Patient)
+            card.show(mainPanel, "PatientView");
+        else if (this.currentUser instanceof Secretary)
+            card.show(mainPanel, "SecretaryView");
     }
 
     /**
@@ -57,6 +62,7 @@ public class Frontend extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         txtUserId = new javax.swing.JFormattedTextField();
+        btnAdminCreateMenu = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         AdminView = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -66,6 +72,20 @@ public class Frontend extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         PatientView = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        AdminCreate = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        txtAdminAccountIdOutput = new javax.swing.JTextField();
+        newAdminInputs = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtaAdminAddress = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txtAdminPassword = new javax.swing.JPasswordField();
+        txtAdminSurname = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtAdminFirstName = new javax.swing.JTextField();
+        btnCreateAdminAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Patient Management System");
@@ -87,6 +107,13 @@ public class Frontend extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
+        btnAdminCreateMenu.setText("Create Admin");
+        btnAdminCreateMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminCreateMenuActionPerformed(evt);
+            }
+        });
+
         mainPanel.setLayout(new java.awt.CardLayout());
 
         jLabel3.setText("Admin Mode");
@@ -104,7 +131,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         AdminViewLayout.setVerticalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 456, Short.MAX_VALUE)
+            .addGap(0, 461, Short.MAX_VALUE)
             .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(AdminViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -129,7 +156,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         DoctorViewLayout.setVerticalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 456, Short.MAX_VALUE)
+            .addGap(0, 461, Short.MAX_VALUE)
             .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(DoctorViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -154,7 +181,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         SecretaryViewLayout.setVerticalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 456, Short.MAX_VALUE)
+            .addGap(0, 461, Short.MAX_VALUE)
             .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SecretaryViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -179,7 +206,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         PatientViewLayout.setVerticalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 456, Short.MAX_VALUE)
+            .addGap(0, 461, Short.MAX_VALUE)
             .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PatientViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -189,25 +216,136 @@ public class Frontend extends javax.swing.JFrame {
 
         mainPanel.add(PatientView, "PatientView");
 
+        jLabel9.setText("Account Id:");
+
+        txtAdminAccountIdOutput.setEditable(false);
+
+        newAdminInputs.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtaAdminAddress.setColumns(20);
+        txtaAdminAddress.setRows(5);
+        jScrollPane1.setViewportView(txtaAdminAddress);
+
+        jLabel8.setText("Address:");
+
+        jLabel11.setText("Password:");
+
+        jLabel10.setText("Surname:");
+
+        jLabel7.setText("First Name:");
+
+        btnCreateAdminAccount.setText("Create Admin Account");
+        btnCreateAdminAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateAdminAccountActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout newAdminInputsLayout = new javax.swing.GroupLayout(newAdminInputs);
+        newAdminInputs.setLayout(newAdminInputsLayout);
+        newAdminInputsLayout.setHorizontalGroup(
+            newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newAdminInputsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newAdminInputsLayout.createSequentialGroup()
+                        .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(newAdminInputsLayout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(jLabel8))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newAdminInputsLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel11))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(newAdminInputsLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(11, 11, 11)))
+                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtAdminFirstName)
+                    .addComponent(txtAdminSurname)
+                    .addComponent(jScrollPane1)
+                    .addComponent(txtAdminPassword))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newAdminInputsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCreateAdminAccount)
+                .addContainerGap())
+        );
+        newAdminInputsLayout.setVerticalGroup(
+            newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newAdminInputsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtAdminFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtAdminSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtAdminPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addGroup(newAdminInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCreateAdminAccount)
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout AdminCreateLayout = new javax.swing.GroupLayout(AdminCreate);
+        AdminCreate.setLayout(AdminCreateLayout);
+        AdminCreateLayout.setHorizontalGroup(
+            AdminCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminCreateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(newAdminInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(387, Short.MAX_VALUE))
+        );
+        AdminCreateLayout.setVerticalGroup(
+            AdminCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminCreateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AdminCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AdminCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(newAdminInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(209, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(AdminCreate, "AdminCreate");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtPassword)
-                    .addComponent(txtUserId, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(btnLogin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPassword)
+                            .addComponent(txtUserId, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLogin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdminCreateMenu))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -215,7 +353,9 @@ public class Frontend extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdminCreateMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -223,8 +363,8 @@ public class Frontend extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtPassword))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -235,6 +375,38 @@ public class Frontend extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         this.doLogin(txtUserId.getText(), txtPassword.getText());
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnAdminCreateMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminCreateMenuActionPerformed
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "AdminCreate");
+    }//GEN-LAST:event_btnAdminCreateMenuActionPerformed
+
+    private void btnCreateAdminAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAdminAccountActionPerformed
+        DataModel data = DataModel.getInstance();
+        
+        Integer usernum = data.getHighestUserNum('A')+1;
+        
+        String firstname = txtAdminFirstName.getText();
+        String surname = txtAdminSurname.getText();
+        String address = txtaAdminAddress.getText();
+        String password = new String(txtAdminPassword.getPassword());
+        
+
+        Administrator admin = new Administrator(usernum, firstname, surname, address, password);
+
+        
+        if(data.addUser(admin))
+        {
+            txtAdminAccountIdOutput.setText(admin.getId());
+            for (Component C: newAdminInputs.getComponents())
+            {
+                if (C instanceof JTextField || C instanceof JTextArea || C instanceof JPasswordField){
+                    ((JTextComponent) C).setText("");
+                }
+            }
+            txtaAdminAddress.setText("");//for some reason the above code misses the text area.
+        }
+    }//GEN-LAST:event_btnCreateAdminAccountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,19 +444,34 @@ public class Frontend extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdminCreate;
     private javax.swing.JPanel AdminView;
     private javax.swing.JPanel DoctorView;
     private javax.swing.JPanel PatientView;
     private javax.swing.JPanel SecretaryView;
+    private javax.swing.JButton btnAdminCreateMenu;
+    private javax.swing.JButton btnCreateAdminAccount;
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel newAdminInputs;
+    private javax.swing.JTextField txtAdminAccountIdOutput;
+    private javax.swing.JTextField txtAdminFirstName;
+    private javax.swing.JPasswordField txtAdminPassword;
+    private javax.swing.JTextField txtAdminSurname;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JFormattedTextField txtUserId;
+    private javax.swing.JTextArea txtaAdminAddress;
     // End of variables declaration//GEN-END:variables
 }
