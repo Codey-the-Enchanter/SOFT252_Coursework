@@ -384,16 +384,16 @@ public class Frontend extends javax.swing.JFrame {
     private void btnCreateAdminAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAdminAccountActionPerformed
         DataModel data = DataModel.getInstance();
         
-        Integer usernum = data.getHighestUserNum('A')+1;
+        AdminBuilder builder = new AdminBuilder();
         
-        String firstname = txtAdminFirstName.getText();
-        String surname = txtAdminSurname.getText();
-        String address = txtaAdminAddress.getText();
-        String password = new String(txtAdminPassword.getPassword());
+        builder.setUserNum(data.getHighestUserNum('A')+1);
         
-
-        Administrator admin = new Administrator(usernum, firstname, surname, address, password);
-
+        builder.setFirstName(txtAdminFirstName.getText());
+        builder.setSurname(txtAdminSurname.getText());
+        builder.setAddress(txtaAdminAddress.getText());
+        builder.setPassword(new String(txtAdminPassword.getPassword()));
+        
+        Administrator admin = builder.build();
         
         if(data.addUser(admin))
         {
