@@ -14,7 +14,6 @@ public abstract class User implements java.io.Serializable {
     protected String firstName = "UNDEFINED";
     protected String surname = "UNDEFINED";
     protected String address = "UNDEFINED";
-    protected String username = "user";
     protected String password = "password";
     
     public User(String userid ,String firstname ,String surname, String address)
@@ -65,5 +64,15 @@ public abstract class User implements java.io.Serializable {
     public String getAddress()
     {
         return this.address;
+    }
+    
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+    
+    public String getPassword()
+    {
+        return this.password;
     }
 }

@@ -5,7 +5,7 @@
  */
 package controller;
 
-import model.*;
+import Model.*;
 
 /**
  *
@@ -30,5 +30,25 @@ public class DataModel {
             instance = new DataModel();
         }
         return instance;
+    }
+    
+    public User processLogin(String userid, String password)
+    {
+        //search for given userid
+        for (User user : users) {
+            if (user.getId().equals(userid)) {
+                //if we get this far, test the password
+                if (user.getPassword().equals(password))
+                {
+                    return user;//password was correct. return current user
+                }
+                else
+                {
+                    return null;//return null if login fails.
+                }
+            }
+        }
+        //we might find ourselves here if no users exsist. better return null just to be safe.
+        return null;
     }
 }
