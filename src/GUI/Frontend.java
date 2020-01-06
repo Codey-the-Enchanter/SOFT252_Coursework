@@ -30,13 +30,14 @@ public class Frontend extends javax.swing.JFrame {
     {
         DataModel data = DataModel.getInstance();
         
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        
         this.currentUser = data.processLogin(userid, password);
         if(this.currentUser == null)
-        {//If login fails abort panel switch
+        {//If login fails blank panel and abort
+            card.show(mainPanel, "Blank");
             return;
         }
-        
-        CardLayout card = (CardLayout)mainPanel.getLayout();
                 
         if (this.currentUser instanceof Administrator)
             card.show(mainPanel, "AdminView");
@@ -46,6 +47,22 @@ public class Frontend extends javax.swing.JFrame {
             card.show(mainPanel, "PatientView");
         else if (this.currentUser instanceof Secretary)
             card.show(mainPanel, "SecretaryView");
+        
+        btnLogin.setEnabled(false);
+        btnLogout.setEnabled(true);
+        btnAdminCreateMenu.setEnabled(false);
+        txtUserId.setText("");
+        txtPassword.setText("");
+    }
+    
+    private void doLogout()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "Blank");
+        this.currentUser = null;
+        btnLogout.setEnabled(false);
+        btnLogin.setEnabled(true);
+        btnAdminCreateMenu.setEnabled(true);
     }
 
     /**
@@ -57,11 +74,6 @@ public class Frontend extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtPassword = new javax.swing.JTextField();
-        btnLogin = new javax.swing.JButton();
-        txtUserId = new javax.swing.JFormattedTextField();
         btnAdminCreateMenu = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         AdminView = new javax.swing.JPanel();
@@ -72,6 +84,7 @@ public class Frontend extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         PatientView = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        Blank = new javax.swing.JPanel();
         AdminCreate = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtAdminAccountIdOutput = new javax.swing.JTextField();
@@ -86,26 +99,17 @@ public class Frontend extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtAdminFirstName = new javax.swing.JTextField();
         btnCreateAdminAccount = new javax.swing.JButton();
+        UserInfo = new javax.swing.JPanel();
+        LoginInputs = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtUserId = new javax.swing.JFormattedTextField();
+        txtPassword = new javax.swing.JTextField();
+        btnLogin = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Patient Management System");
-
-        jLabel1.setText("User ID:");
-
-        jLabel2.setText("Password:");
-
-        btnLogin.setText("Login");
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
-
-        try {
-            txtUserId.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("U####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
 
         btnAdminCreateMenu.setText("Create Admin");
         btnAdminCreateMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -114,6 +118,7 @@ public class Frontend extends javax.swing.JFrame {
             }
         });
 
+        mainPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         mainPanel.setLayout(new java.awt.CardLayout());
 
         jLabel3.setText("Admin Mode");
@@ -122,7 +127,7 @@ public class Frontend extends javax.swing.JFrame {
         AdminView.setLayout(AdminViewLayout);
         AdminViewLayout.setHorizontalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 796, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
             .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(AdminViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -131,7 +136,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         AdminViewLayout.setVerticalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
             .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(AdminViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -147,7 +152,7 @@ public class Frontend extends javax.swing.JFrame {
         DoctorView.setLayout(DoctorViewLayout);
         DoctorViewLayout.setHorizontalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 796, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
             .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(DoctorViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -156,7 +161,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         DoctorViewLayout.setVerticalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
             .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(DoctorViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -172,7 +177,7 @@ public class Frontend extends javax.swing.JFrame {
         SecretaryView.setLayout(SecretaryViewLayout);
         SecretaryViewLayout.setHorizontalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 796, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
             .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SecretaryViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -181,7 +186,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         SecretaryViewLayout.setVerticalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
             .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SecretaryViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -197,7 +202,7 @@ public class Frontend extends javax.swing.JFrame {
         PatientView.setLayout(PatientViewLayout);
         PatientViewLayout.setHorizontalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 796, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
             .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PatientViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -206,7 +211,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         PatientViewLayout.setVerticalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
             .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PatientViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -215,6 +220,19 @@ public class Frontend extends javax.swing.JFrame {
         );
 
         mainPanel.add(PatientView, "PatientView");
+
+        javax.swing.GroupLayout BlankLayout = new javax.swing.GroupLayout(Blank);
+        Blank.setLayout(BlankLayout);
+        BlankLayout.setHorizontalGroup(
+            BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 645, Short.MAX_VALUE)
+        );
+        BlankLayout.setVerticalGroup(
+            BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 457, Short.MAX_VALUE)
+        );
+
+        mainPanel.add(Blank, "Blank");
 
         jLabel9.setText("Account Id:");
 
@@ -308,7 +326,7 @@ public class Frontend extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addContainerGap(236, Short.MAX_VALUE))
         );
         AdminCreateLayout.setVerticalGroup(
             AdminCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,53 +337,116 @@ public class Frontend extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(newAdminInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
 
         mainPanel.add(AdminCreate, "AdminCreate");
+
+        UserInfo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout UserInfoLayout = new javax.swing.GroupLayout(UserInfo);
+        UserInfo.setLayout(UserInfoLayout);
+        UserInfoLayout.setHorizontalGroup(
+            UserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 245, Short.MAX_VALUE)
+        );
+        UserInfoLayout.setVerticalGroup(
+            UserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        LoginInputs.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel1.setText("User ID:");
+
+        jLabel2.setText("Password:");
+
+        try {
+            txtUserId.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("U####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        btnLogout.setText("Logout");
+        btnLogout.setEnabled(false);
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout LoginInputsLayout = new javax.swing.GroupLayout(LoginInputs);
+        LoginInputs.setLayout(LoginInputsLayout);
+        LoginInputsLayout.setHorizontalGroup(
+            LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LoginInputsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtPassword)
+                    .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        LoginInputsLayout.setVerticalGroup(
+            LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LoginInputsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtUserId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(LoginInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPassword)
+                        .addComponent(btnLogout)))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPassword)
-                            .addComponent(txtUserId, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLogin)
+                        .addComponent(LoginInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAdminCreateMenu))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAdminCreateMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtUserId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(txtPassword))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LoginInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdminCreateMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(UserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -408,6 +489,10 @@ public class Frontend extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCreateAdminAccountActionPerformed
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        this.doLogout();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -419,7 +504,7 @@ public class Frontend extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -446,12 +531,16 @@ public class Frontend extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AdminCreate;
     private javax.swing.JPanel AdminView;
+    private javax.swing.JPanel Blank;
     private javax.swing.JPanel DoctorView;
+    private javax.swing.JPanel LoginInputs;
     private javax.swing.JPanel PatientView;
     private javax.swing.JPanel SecretaryView;
+    private javax.swing.JPanel UserInfo;
     private javax.swing.JButton btnAdminCreateMenu;
     private javax.swing.JButton btnCreateAdminAccount;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
