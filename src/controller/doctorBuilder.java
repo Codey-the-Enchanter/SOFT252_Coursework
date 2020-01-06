@@ -5,13 +5,13 @@
  */
 package controller;
 
-import Model.Administrator;
+import Model.Doctor;
 
 /**
  *
  * @author Matthew
  */
-public class AdminBuilder {
+public class doctorBuilder {
     private Integer userNum;
     private String firstName;
     private String surname;
@@ -43,8 +43,8 @@ public class AdminBuilder {
         this.password = password;
     }
     
-    public Administrator build()
+    public Doctor build()
     {
-        return new Administrator(userNum, firstName, surname, address, password);
+        return new Doctor(userNum, firstName, surname, address, password);
     }
 }

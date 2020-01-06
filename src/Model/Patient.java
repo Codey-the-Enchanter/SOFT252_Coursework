@@ -10,14 +10,39 @@ package Model;
  * @author Matthew
  */
 public class Patient extends User{
-    public Patient(Integer usernum ,String firstname ,String surname, String address, String password)
+    private String gender = "UNDEFINED";
+    private Integer age = 0;
+    
+    public Patient(Integer usernum ,String firstname ,String surname, String address, String password, String gender, Integer age)
     {
         super(usernum ,firstname ,surname, address, password);
+        this.gender = gender;
+        this.age = age;
     }
     
     @Override
     public char getType()
     {
         return 'A';
+    }
+    
+    public String getGender()
+    {
+        return this.gender;
+    }
+    
+    public void setGender(String gender)
+    {
+        this.gender = gender;
+    }
+    
+    public Integer getAge()
+    {
+        return this.age;
+    }
+    
+    public void setAge(Integer age)
+    {
+        this.age = age;
     }
 }

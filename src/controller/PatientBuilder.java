@@ -5,18 +5,20 @@
  */
 package controller;
 
-import Model.Administrator;
+import Model.Patient;
 
 /**
  *
  * @author Matthew
  */
-public class AdminBuilder {
+public class PatientBuilder {
     private Integer userNum;
     private String firstName;
     private String surname;
     private String address;
     private String password;
+    private String gender;
+    private Integer age;
     
     public void setUserNum(Integer num)
     {
@@ -43,8 +45,18 @@ public class AdminBuilder {
         this.password = password;
     }
     
-    public Administrator build()
+    public void setGender(String gender)
     {
-        return new Administrator(userNum, firstName, surname, address, password);
+        this.gender = gender;
+    }
+    
+    public void setAge(Integer age)
+    {
+        this.age = age;
+    }
+    
+    public Patient build()
+    {
+        return new Patient(userNum, firstName, surname, address, password, gender, age);
     }
 }
