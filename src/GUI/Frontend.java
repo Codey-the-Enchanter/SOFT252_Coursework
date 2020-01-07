@@ -60,6 +60,12 @@ public class Frontend extends javax.swing.JFrame {
         card.show(mainPanel, "Blank");
     }
     
+    private void switchPanelAccountRequest()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "AccountRequest");
+    }
+    
     private void populateComboboxAdminAccountSelector()
     {
         DataModel data = DataModel.getInstance();
@@ -220,6 +226,19 @@ public class Frontend extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtAdminFirstName = new javax.swing.JTextField();
         btnCreateAdminAccount = new javax.swing.JButton();
+        AccountRequest = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        txtRequestFirstName = new javax.swing.JTextField();
+        txtRequestAddress = new javax.swing.JTextField();
+        btnMakeAccountRequest = new javax.swing.JButton();
+        jLabel27 = new javax.swing.JLabel();
+        txtRequestSurname = new javax.swing.JTextField();
+        cmbRequestGender = new javax.swing.JComboBox<>();
+        txtRequestAge = new javax.swing.JFormattedTextField();
+        jLabel28 = new javax.swing.JLabel();
+        txtRequestPassword = new javax.swing.JPasswordField();
+        jLabel29 = new javax.swing.JLabel();
         UserInfo = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtInfoFirstName = new javax.swing.JTextField();
@@ -238,6 +257,7 @@ public class Frontend extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
+        btnRequestAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Patient Management System");
@@ -265,7 +285,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         BlankLayout.setVerticalGroup(
             BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 487, Short.MAX_VALUE)
         );
 
         mainPanel.add(Blank, "Blank");
@@ -551,7 +571,7 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AdminViewLayout.createSequentialGroup()
                         .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 171, Short.MAX_VALUE))
+                        .addGap(0, 195, Short.MAX_VALUE))
                     .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -573,7 +593,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         DoctorViewLayout.setVerticalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 487, Short.MAX_VALUE)
             .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(DoctorViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -598,7 +618,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         SecretaryViewLayout.setVerticalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 487, Short.MAX_VALUE)
             .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SecretaryViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -623,7 +643,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         PatientViewLayout.setVerticalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 487, Short.MAX_VALUE)
             .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PatientViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -736,10 +756,101 @@ public class Frontend extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(newAdminInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
 
         mainPanel.add(AdminCreate, "AdminCreate");
+
+        jLabel25.setText("first Name: ");
+
+        jLabel26.setText("Address: ");
+
+        btnMakeAccountRequest.setText("Request");
+        btnMakeAccountRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMakeAccountRequestActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setText("Surname: ");
+
+        cmbRequestGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+
+        try {
+            txtRequestAge.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel28.setText("Age: ");
+
+        jLabel29.setText("Password:");
+
+        javax.swing.GroupLayout AccountRequestLayout = new javax.swing.GroupLayout(AccountRequest);
+        AccountRequest.setLayout(AccountRequestLayout);
+        AccountRequestLayout.setHorizontalGroup(
+            AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AccountRequestLayout.createSequentialGroup()
+                .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AccountRequestLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel26)))
+                    .addGroup(AccountRequestLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel25))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AccountRequestLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbRequestGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(AccountRequestLayout.createSequentialGroup()
+                        .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtRequestPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRequestAge, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                            .addComponent(txtRequestAddress, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRequestFirstName, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRequestSurname, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnMakeAccountRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(404, Short.MAX_VALUE))
+        );
+        AccountRequestLayout.setVerticalGroup(
+            AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AccountRequestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnMakeAccountRequest, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AccountRequestLayout.createSequentialGroup()
+                        .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel25)
+                            .addComponent(txtRequestFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtRequestSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel27))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRequestAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmbRequestGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRequestAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRequestPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29))
+                .addContainerGap(318, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(AccountRequest, "AccountRequest");
 
         UserInfo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -875,6 +986,13 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnRequestAccount.setText("Request Account");
+        btnRequestAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRequestAccountActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -885,6 +1003,8 @@ public class Frontend extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(LoginInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRequestAccount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdminCreateMenu))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -898,7 +1018,9 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(LoginInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdminCreateMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAdminCreateMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRequestAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(UserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1023,6 +1145,24 @@ public class Frontend extends javax.swing.JFrame {
         txtaAdminFeedbackOutComment.setText(feedback.getComment());
     }//GEN-LAST:event_cmbSelectFeedbackActionPerformed
 
+    private void btnRequestAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestAccountActionPerformed
+        switchPanelAccountRequest();
+    }//GEN-LAST:event_btnRequestAccountActionPerformed
+
+    private void btnMakeAccountRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeAccountRequestActionPerformed
+        PatientBuilder request = new PatientBuilder();
+        
+        request.setFirstName(txtRequestFirstName.getText());
+        request.setSurname(txtRequestSurname.getText());
+        request.setAddress(txtRequestAddress.getText());
+        request.setGender((String)cmbRequestGender.getSelectedItem());
+        request.setAge(Integer.parseInt(txtRequestAge.getText()));//Its safe for us to do this beucause txtrequestAge is restricted to a single number character
+        request.setPassword(new String(txtRequestPassword.getPassword()));
+        
+        DataModel data = DataModel.getInstance();
+        data.addAccountRequest(request);
+    }//GEN-LAST:event_btnMakeAccountRequestActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1063,6 +1203,7 @@ public class Frontend extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AccountRequest;
     private javax.swing.JPanel AdminAccountViewer;
     private javax.swing.JPanel AdminCreate;
     private javax.swing.JPanel AdminCreatorInputs;
@@ -1081,7 +1222,9 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JButton btnCreateAdminAccount;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnMakeAccountRequest;
     private javax.swing.JButton btnRefreshAdminCmb;
+    private javax.swing.JButton btnRequestAccount;
     private javax.swing.ButtonGroup btngrpAdminCreating;
     /*
     private javax.swing.JComboBox<String> cmbAdminAccountSelector;
@@ -1091,6 +1234,7 @@ public class Frontend extends javax.swing.JFrame {
     me edit the declaration.
     */
     private javax.swing.JComboBox<User> cmbAdminAccountSelector;
+    private javax.swing.JComboBox<String> cmbRequestGender;
     /*
     private javax.swing.JComboBox<String> cmbSelectFeedback;
     */
@@ -1112,6 +1256,11 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1142,6 +1291,11 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JTextField txtInfoSurname;
     private javax.swing.JTextField txtInfoUserId;
     private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtRequestAddress;
+    private javax.swing.JFormattedTextField txtRequestAge;
+    private javax.swing.JTextField txtRequestFirstName;
+    private javax.swing.JPasswordField txtRequestPassword;
+    private javax.swing.JTextField txtRequestSurname;
     private javax.swing.JFormattedTextField txtUserId;
     private javax.swing.JTextArea txtaAdminAddress;
     private javax.swing.JTextArea txtaAdminCreatorAddress;

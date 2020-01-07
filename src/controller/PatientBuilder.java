@@ -11,14 +11,14 @@ import Model.Patient;
  *
  * @author Matthew
  */
-public class PatientBuilder implements IBuilder{
-    private Integer userNum;
-    private String firstName;
-    private String surname;
-    private String address;
-    private String password;
-    private String gender;
-    private Integer age;
+public class PatientBuilder implements IBuilder, java.io.Serializable{
+    protected Integer userNum;
+    protected String firstName;
+    protected String surname;
+    protected String address;
+    protected String password;
+    protected String gender;
+    protected Integer age;
     
     @Override
     public void setUserNum(Integer num)

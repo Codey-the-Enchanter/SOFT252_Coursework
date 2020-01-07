@@ -21,10 +21,18 @@ public class DataModel implements java.io.Serializable{
     private ArrayList<User> users = new ArrayList<User>();
     
     /**
+     * Account Requests are stored as PatientBuilder objects.
+     * When the request is approved, all we have to do is build
+     * the object.
+     */
+    private ArrayList<PatientBuilder> requests = new ArrayList<PatientBuilder>();
+    
+    /**
     * Data is mirrored into this class to be serialized
     */
     private class DataPackage implements java.io.Serializable{
         public ArrayList<User> users = new ArrayList<User>();
+        private ArrayList<PatientBuilder> requests = new ArrayList<PatientBuilder>();
     }
     
     /**
@@ -36,12 +44,14 @@ public class DataModel implements java.io.Serializable{
     {
         DataPackage data = new DataPackage();
         data.users = this.users;
+        data.requests = this.requests;
         return data;
     }
     
     private void unpackData(DataPackage data)
     {
         this.users = data.users;
+        this.requests = data.requests;
     }
     
     /**
@@ -106,6 +116,10 @@ public class DataModel implements java.io.Serializable{
         return true;
     }
     
+    public void addAccountRequest(PatientBuilder request)
+    {
+        requests.add(request);
+    }
     
     /**
      * Get all users for a given type
