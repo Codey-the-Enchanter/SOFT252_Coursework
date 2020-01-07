@@ -95,6 +95,7 @@ public class Frontend extends javax.swing.JFrame {
         btngrpAdminCreating = new javax.swing.ButtonGroup();
         btnAdminCreateMenu = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
+        Blank = new javax.swing.JPanel();
         AdminView = new javax.swing.JPanel();
         newAdminInputs1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -115,7 +116,6 @@ public class Frontend extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         PatientView = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        Blank = new javax.swing.JPanel();
         AdminCreate = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtAdminAccountIdOutput = new javax.swing.JTextField();
@@ -151,6 +151,11 @@ public class Frontend extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Patient Management System");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         btnAdminCreateMenu.setText("Create Admin");
         btnAdminCreateMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -161,6 +166,19 @@ public class Frontend extends javax.swing.JFrame {
 
         mainPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         mainPanel.setLayout(new java.awt.CardLayout());
+
+        javax.swing.GroupLayout BlankLayout = new javax.swing.GroupLayout(Blank);
+        Blank.setLayout(BlankLayout);
+        BlankLayout.setHorizontalGroup(
+            BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 645, Short.MAX_VALUE)
+        );
+        BlankLayout.setVerticalGroup(
+            BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 459, Short.MAX_VALUE)
+        );
+
+        mainPanel.add(Blank, "Blank");
 
         newAdminInputs1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -347,19 +365,6 @@ public class Frontend extends javax.swing.JFrame {
         );
 
         mainPanel.add(PatientView, "PatientView");
-
-        javax.swing.GroupLayout BlankLayout = new javax.swing.GroupLayout(Blank);
-        Blank.setLayout(BlankLayout);
-        BlankLayout.setHorizontalGroup(
-            BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 645, Short.MAX_VALUE)
-        );
-        BlankLayout.setVerticalGroup(
-            BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 459, Short.MAX_VALUE)
-        );
-
-        mainPanel.add(Blank, "Blank");
 
         jLabel9.setText("Account Id:");
 
@@ -627,7 +632,6 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(LoginInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdminCreateMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(UserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -681,6 +685,11 @@ public class Frontend extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCreateAdminAccount1ActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        DataModel data = DataModel.getInstance();
+        data.saveData();
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -708,6 +717,10 @@ public class Frontend extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        //Always load data on startup.
+        DataModel data = DataModel.getInstance();
+        data.loadData();
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
