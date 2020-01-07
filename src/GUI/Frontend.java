@@ -26,6 +26,38 @@ public class Frontend extends javax.swing.JFrame {
         initComponents();
     }
     
+    public void switchPanelDoctor()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "DoctorView");
+    }
+    public void switchPanelAdmin()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "AdminView");
+    }
+    public void switchPanelSecretary()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "SecretaryView");
+    }
+    public void switchPanelPatient()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "PatientView");
+    }
+    public void switchPanelCreateAdmin()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "AdminCreate");
+
+    }
+    public void switchPanelBlank()
+    {
+        CardLayout card = (CardLayout)mainPanel.getLayout();
+        card.show(mainPanel, "Blank");
+    }
+    
     private void doLogin(String userid, String password)
     {
         DataModel data = DataModel.getInstance();
@@ -35,18 +67,18 @@ public class Frontend extends javax.swing.JFrame {
         this.currentUser = data.processLogin(userid, password);
         if(this.currentUser == null)
         {//If login fails blank panel and abort
-            card.show(mainPanel, "Blank");
+            switchPanelBlank();
             return;
         }
                 
         if (this.currentUser instanceof Administrator)
-            card.show(mainPanel, "AdminView");
+            switchPanelAdmin();
         else if (this.currentUser instanceof Doctor)
-            card.show(mainPanel, "DoctorView");
+            switchPanelDoctor();
         else if (this.currentUser instanceof Patient)
-            card.show(mainPanel, "PatientView");
+            switchPanelPatient();
         else if (this.currentUser instanceof Secretary)
-            card.show(mainPanel, "SecretaryView");
+            switchPanelSecretary();
         
         btnLogin.setEnabled(false);
         btnLogout.setEnabled(true);
@@ -59,7 +91,7 @@ public class Frontend extends javax.swing.JFrame {
     private void doLogout()
     {
         CardLayout card = (CardLayout)mainPanel.getLayout();
-        card.show(mainPanel, "Blank");
+        switchPanelBlank();
         this.currentUser = null;
         btnLogout.setEnabled(false);
         btnLogin.setEnabled(true);
@@ -112,6 +144,8 @@ public class Frontend extends javax.swing.JFrame {
         rdoDoctor = new javax.swing.JRadioButton();
         lblAdminCreateUser = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        AdminAccountViewer = new javax.swing.JPanel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         DoctorView = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         SecretaryView = new javax.swing.JPanel();
@@ -286,6 +320,27 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        AdminAccountViewer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout AdminAccountViewerLayout = new javax.swing.GroupLayout(AdminAccountViewer);
+        AdminAccountViewer.setLayout(AdminAccountViewerLayout);
+        AdminAccountViewerLayout.setHorizontalGroup(
+            AdminAccountViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminAccountViewerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(159, Short.MAX_VALUE))
+        );
+        AdminAccountViewerLayout.setVerticalGroup(
+            AdminAccountViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminAccountViewerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout AdminViewLayout = new javax.swing.GroupLayout(AdminView);
         AdminView.setLayout(AdminViewLayout);
         AdminViewLayout.setHorizontalGroup(
@@ -293,13 +348,17 @@ public class Frontend extends javax.swing.JFrame {
             .addGroup(AdminViewLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(379, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AdminAccountViewer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         AdminViewLayout.setVerticalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(182, Short.MAX_VALUE))
         );
 
@@ -660,8 +719,7 @@ public class Frontend extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnAdminCreateMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminCreateMenuActionPerformed
-        CardLayout card = (CardLayout)mainPanel.getLayout();
-        card.show(mainPanel, "AdminCreate");
+        switchPanelCreateAdmin();
     }//GEN-LAST:event_btnAdminCreateMenuActionPerformed
 
     private void btnCreateAdminAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAdminAccountActionPerformed
@@ -781,6 +839,7 @@ public class Frontend extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdminAccountViewer;
     private javax.swing.JPanel AdminCreate;
     private javax.swing.JPanel AdminCreatorInputs;
     private javax.swing.JPanel AdminView;
@@ -796,6 +855,7 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
     private javax.swing.ButtonGroup btngrpAdminCreating;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
