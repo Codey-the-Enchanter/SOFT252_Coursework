@@ -39,22 +39,47 @@ public abstract class User implements java.io.Serializable {
     as an integer making arithmatic comparisons easier.
     */
     
+    /**
+     * Children of User must use this method to return
+     * a char value corresponding to type of User child
+     * that it is. E.g. Doctor implements getType as a
+     * method that always return the char 'D'. This is
+     * to ensure that the identifier portion of the
+     * userId is never mismatched with the actual
+     * subclass type.
+     * @return the first character of the userId that identifies the type of user
+     */
     public abstract char getType();
     
-    public Integer getNum()
-    {
-        return this.userNum;
-    }
     
+    /**
+     * Gets the full userId. Will always be in format
+     * Letter-Number-Number-Number-Number
+     * @return full userId
+     */
     public String getId()
     {
         String strUserNum = String.format("%04d", this.userNum);
         return this.getType()+strUserNum;
     }
     
+    /**
+     * Sets the numerical portion of the userid.
+     * @param usernum value to set 
+     */
     public void setNum(Integer usernum)
     {
         this.userNum = usernum;
+    }
+    
+    /**
+     * Gets numerical portion of userid
+     * 
+     * @return numerical portion of userid as an Integer
+     */
+    public Integer getNum()
+    {
+        return this.userNum;
     }
     
     public void setFirstName(String firstname)
