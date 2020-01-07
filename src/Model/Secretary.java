@@ -18,6 +18,6 @@ public class Secretary extends User{
     @Override
     public char getType()
     {
-        return 'A';
+        return 'S';
     }
 }

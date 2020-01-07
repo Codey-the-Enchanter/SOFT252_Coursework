@@ -5,20 +5,18 @@
  */
 package controller;
 
-import Model.Patient;
+import Model.Doctor;
 
 /**
  *
  * @author Matthew
  */
-public class PatientBuilder implements IBuilder{
+public class DoctorBuilder implements IBuilder{
     private Integer userNum;
     private String firstName;
     private String surname;
     private String address;
     private String password;
-    private String gender;
-    private Integer age;
     
     @Override
     public void setUserNum(Integer num)
@@ -53,22 +51,12 @@ public class PatientBuilder implements IBuilder{
     @Override
     public char getType()
     {
-        return 'P';
-    }
-    
-    public void setGender(String gender)
-    {
-        this.gender = gender;
-    }
-    
-    public void setAge(Integer age)
-    {
-        this.age = age;
+        return 'D';
     }
     
     @Override
-    public Patient build()
+    public Doctor build()
     {
-        return new Patient(userNum, firstName, surname, address, password, gender, age);
+        return new Doctor(userNum, firstName, surname, address, password);
     }
 }

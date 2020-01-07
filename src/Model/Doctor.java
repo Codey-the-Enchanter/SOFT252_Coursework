@@ -18,6 +18,6 @@ public class Doctor extends User{
     @Override
     public char getType()
     {
-        return 'A';
+        return 'D';
     }
 }

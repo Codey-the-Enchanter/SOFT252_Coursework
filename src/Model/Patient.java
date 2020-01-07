@@ -23,7 +23,7 @@ public class Patient extends User{
     @Override
     public char getType()
     {
-        return 'A';
+        return 'P';
     }
     
     public String getGender()
