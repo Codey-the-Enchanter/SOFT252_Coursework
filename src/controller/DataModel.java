@@ -106,6 +106,26 @@ public class DataModel implements java.io.Serializable{
         return true;
     }
     
+    
+    /**
+     * Get all users for a given type
+     * 
+     * @param type type identifier character
+     * @return ArrayList of Users that match the given type.
+     */
+    public ArrayList<User> getTypedUsers(char type)
+    {
+        ArrayList<User> output = new ArrayList<User>();
+        
+        for(User u: users) {
+            if (u.getType() == type) {
+                output.add(u);
+            }
+        }
+        
+        return output;
+    }
+    
     /**
      * <p>check all User objects in the Users list of a given type 
      * and find the hightest usernum value from among them.</p>

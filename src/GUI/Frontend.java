@@ -26,36 +26,73 @@ public class Frontend extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void switchPanelDoctor()
+    private void switchPanelDoctor()
     {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "DoctorView");
     }
-    public void switchPanelAdmin()
+    private void switchPanelAdmin()
     {
+        populateComboboxAdminAccountSelector();
+        
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "AdminView");
     }
-    public void switchPanelSecretary()
+    private void switchPanelSecretary()
     {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "SecretaryView");
     }
-    public void switchPanelPatient()
+    private void switchPanelPatient()
     {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "PatientView");
     }
-    public void switchPanelCreateAdmin()
+    private void switchPanelCreateAdmin()
     {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "AdminCreate");
 
     }
-    public void switchPanelBlank()
+    private void switchPanelBlank()
     {
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "Blank");
+    }
+    
+    private void populateComboboxAdminAccountSelector()
+    {
+        DataModel data = DataModel.getInstance();
+        
+        cmbAdminAccountSelector.removeAllItems();
+        //Add the Doctors
+        for (User u: data.getTypedUsers('D'))
+        {
+            cmbAdminAccountSelector.addItem(u);
+        }
+        for (User u: data.getTypedUsers('S'))
+        {
+            cmbAdminAccountSelector.addItem(u);
+        }
+    }
+    
+    public void populateComboboxAdminFeedback()
+    {
+        DataModel data = DataModel.getInstance();
+        
+        cmbSelectFeedback.removeAllItems();
+        
+        User user = (User) cmbAdminAccountSelector.getSelectedItem();
+        
+        if (!(user instanceof User))
+            return;
+        
+        Doctor doctor = (Doctor) user;
+        
+        for (Feedback f: doctor.getFeedback())
+        {
+            cmbSelectFeedback.addItem(f);
+        }
     }
     
     private void doLogin(String userid, String password)
@@ -115,6 +152,8 @@ public class Frontend extends javax.swing.JFrame {
         txtaInfoAddress.setText("");
     }
 
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,7 +184,22 @@ public class Frontend extends javax.swing.JFrame {
         lblAdminCreateUser = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         AdminAccountViewer = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbAdminAccountSelector = new javax.swing.JComboBox<User>();
+        btnRefreshAdminCmb = new javax.swing.JButton();
+        AdminMakeFeedback = new javax.swing.JPanel();
+        txtAdminFeedbackInRating = new javax.swing.JFormattedTextField();
+        jLabel21 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtaAdminFeedbackInComment = new javax.swing.JTextArea();
+        jLabel22 = new javax.swing.JLabel();
+        btnAdminFeedbackAdd = new javax.swing.JButton();
+        AdminViewFeedback = new javax.swing.JPanel();
+        txtAdminRatingOut = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txtaAdminFeedbackOutComment = new javax.swing.JTextArea();
+        jLabel24 = new javax.swing.JLabel();
+        cmbSelectFeedback = new javax.swing.JComboBox<Feedback>();
         DoctorView = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         SecretaryView = new javax.swing.JPanel();
@@ -322,7 +376,133 @@ public class Frontend extends javax.swing.JFrame {
 
         AdminAccountViewer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbAdminAccountSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAdminAccountSelectorActionPerformed(evt);
+            }
+        });
+
+        btnRefreshAdminCmb.setText("Refresh");
+        btnRefreshAdminCmb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshAdminCmbActionPerformed(evt);
+            }
+        });
+
+        AdminMakeFeedback.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        try {
+            txtAdminFeedbackInRating.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel21.setText("Rating: ");
+
+        txtaAdminFeedbackInComment.setColumns(20);
+        txtaAdminFeedbackInComment.setRows(5);
+        jScrollPane4.setViewportView(txtaAdminFeedbackInComment);
+
+        jLabel22.setText("Comment:");
+
+        btnAdminFeedbackAdd.setText("Add Feedback");
+        btnAdminFeedbackAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminFeedbackAddActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout AdminMakeFeedbackLayout = new javax.swing.GroupLayout(AdminMakeFeedback);
+        AdminMakeFeedback.setLayout(AdminMakeFeedbackLayout);
+        AdminMakeFeedbackLayout.setHorizontalGroup(
+            AdminMakeFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminMakeFeedbackLayout.createSequentialGroup()
+                .addGroup(AdminMakeFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AdminMakeFeedbackLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtAdminFeedbackInRating))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminMakeFeedbackLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AdminMakeFeedbackLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel22)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnAdminFeedbackAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        AdminMakeFeedbackLayout.setVerticalGroup(
+            AdminMakeFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminMakeFeedbackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AdminMakeFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAdminFeedbackInRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22)
+                .addGap(7, 7, 7)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAdminFeedbackAdd)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        AdminViewFeedback.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtAdminRatingOut.setEditable(false);
+
+        jLabel23.setText("Rating: ");
+
+        txtaAdminFeedbackOutComment.setEditable(false);
+        txtaAdminFeedbackOutComment.setColumns(20);
+        txtaAdminFeedbackOutComment.setRows(5);
+        jScrollPane5.setViewportView(txtaAdminFeedbackOutComment);
+
+        jLabel24.setText("Comment:");
+
+        cmbSelectFeedback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSelectFeedbackActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout AdminViewFeedbackLayout = new javax.swing.GroupLayout(AdminViewFeedback);
+        AdminViewFeedback.setLayout(AdminViewFeedbackLayout);
+        AdminViewFeedbackLayout.setHorizontalGroup(
+            AdminViewFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminViewFeedbackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AdminViewFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AdminViewFeedbackLayout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtAdminRatingOut))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminViewFeedbackLayout.createSequentialGroup()
+                        .addGap(0, 2, Short.MAX_VALUE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AdminViewFeedbackLayout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(cmbSelectFeedback, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        AdminViewFeedbackLayout.setVerticalGroup(
+            AdminViewFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminViewFeedbackLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AdminViewFeedbackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAdminRatingOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbSelectFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout AdminAccountViewerLayout = new javax.swing.GroupLayout(AdminAccountViewer);
         AdminAccountViewer.setLayout(AdminAccountViewerLayout);
@@ -330,15 +510,27 @@ public class Frontend extends javax.swing.JFrame {
             AdminAccountViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminAccountViewerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGroup(AdminAccountViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AdminAccountViewerLayout.createSequentialGroup()
+                        .addComponent(AdminMakeFeedback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AdminViewFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbAdminAccountSelector, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRefreshAdminCmb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         AdminAccountViewerLayout.setVerticalGroup(
             AdminAccountViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminAccountViewerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnRefreshAdminCmb)
+                .addGap(3, 3, 3)
+                .addComponent(cmbAdminAccountSelector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AdminAccountViewerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AdminMakeFeedback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AdminViewFeedback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout AdminViewLayout = new javax.swing.GroupLayout(AdminView);
@@ -349,17 +541,19 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AdminAccountViewer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         AdminViewLayout.setVerticalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AdminViewLayout.createSequentialGroup()
+                        .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 171, Short.MAX_VALUE))
+                    .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         mainPanel.add(AdminView, "AdminView");
@@ -781,9 +975,7 @@ public class Frontend extends javax.swing.JFrame {
         
         if(data.addUser(user))
         {
-            System.err.println(user.getId());
             lblAdminCreateUser.setText(user.getId());
-            System.err.println(lblAdminCreateUser.getText());
             for (Component C: AdminCreatorInputs.getComponents())
             {
                 if (C instanceof JTextField || C instanceof JTextArea || C instanceof JPasswordField){
@@ -798,6 +990,38 @@ public class Frontend extends javax.swing.JFrame {
         DataModel data = DataModel.getInstance();
         data.saveData();
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnRefreshAdminCmbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshAdminCmbActionPerformed
+        populateComboboxAdminAccountSelector();
+    }//GEN-LAST:event_btnRefreshAdminCmbActionPerformed
+
+    private void btnAdminFeedbackAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminFeedbackAddActionPerformed
+        User user = (User)cmbAdminAccountSelector.getSelectedItem();
+        
+        if (!(user instanceof Doctor))
+            return;//Only Doctors can have feedback
+        
+        //we can now cast user to Doctor in safty
+        Doctor doctor = (Doctor)user;
+        
+        Integer rating = Integer.parseInt(txtAdminFeedbackInRating.getText());
+        String comment = txtaAdminFeedbackInComment.getText();
+        
+        Feedback feedback = new Feedback(rating, comment);
+        
+        doctor.addFeedback(feedback);
+    }//GEN-LAST:event_btnAdminFeedbackAddActionPerformed
+
+    private void cmbAdminAccountSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAdminAccountSelectorActionPerformed
+        populateComboboxAdminFeedback();
+    }//GEN-LAST:event_cmbAdminAccountSelectorActionPerformed
+
+    private void cmbSelectFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSelectFeedbackActionPerformed
+        Feedback feedback = (Feedback) cmbSelectFeedback.getSelectedItem();
+        
+        txtAdminRatingOut.setText(feedback.getRating().toString());
+        txtaAdminFeedbackOutComment.setText(feedback.getComment());
+    }//GEN-LAST:event_cmbSelectFeedbackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -842,7 +1066,9 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JPanel AdminAccountViewer;
     private javax.swing.JPanel AdminCreate;
     private javax.swing.JPanel AdminCreatorInputs;
+    private javax.swing.JPanel AdminMakeFeedback;
     private javax.swing.JPanel AdminView;
+    private javax.swing.JPanel AdminViewFeedback;
     private javax.swing.JPanel Blank;
     private javax.swing.JPanel DoctorView;
     private javax.swing.JPanel LoginInputs;
@@ -851,11 +1077,24 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JPanel UserInfo;
     private javax.swing.JButton btnAdminCreateMenu;
     private javax.swing.JButton btnAdminCreator;
+    private javax.swing.JButton btnAdminFeedbackAdd;
     private javax.swing.JButton btnCreateAdminAccount;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnRefreshAdminCmb;
     private javax.swing.ButtonGroup btngrpAdminCreating;
-    private javax.swing.JComboBox<String> jComboBox1;
+    /*
+    private javax.swing.JComboBox<String> cmbAdminAccountSelector;
+    Since we are currently in a comment I'd like to take the
+    oppertunity to say sorry for what I'm doing here. I know
+    that this is a stupid hack but netbeans litteraly wont let
+    me edit the declaration.
+    */
+    private javax.swing.JComboBox<User> cmbAdminAccountSelector;
+    /*
+    private javax.swing.JComboBox<String> cmbSelectFeedback;
+    */
+    private javax.swing.JComboBox<Feedback> cmbSelectFeedback;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -869,6 +1108,10 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -879,6 +1122,8 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblAdminCreateUser;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel newAdminInputs;
@@ -888,8 +1133,10 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JTextField txtAdminCreatorFname;
     private javax.swing.JPasswordField txtAdminCreatorPassword;
     private javax.swing.JTextField txtAdminCreatorSname;
+    private javax.swing.JFormattedTextField txtAdminFeedbackInRating;
     private javax.swing.JTextField txtAdminFirstName;
     private javax.swing.JPasswordField txtAdminPassword;
+    private javax.swing.JTextField txtAdminRatingOut;
     private javax.swing.JTextField txtAdminSurname;
     private javax.swing.JTextField txtInfoFirstName;
     private javax.swing.JTextField txtInfoSurname;
@@ -898,6 +1145,8 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtUserId;
     private javax.swing.JTextArea txtaAdminAddress;
     private javax.swing.JTextArea txtaAdminCreatorAddress;
+    private javax.swing.JTextArea txtaAdminFeedbackInComment;
+    private javax.swing.JTextArea txtaAdminFeedbackOutComment;
     private javax.swing.JTextArea txtaInfoAddress;
     // End of variables declaration//GEN-END:variables
 }

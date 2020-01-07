@@ -51,7 +51,6 @@ public abstract class User implements java.io.Serializable {
      */
     public abstract char getType();
     
-    
     /**
      * Gets the full userId. Will always be in format
      * Letter-Number-Number-Number-Number
@@ -61,6 +60,12 @@ public abstract class User implements java.io.Serializable {
     {
         String strUserNum = String.format("%04d", this.userNum);
         return this.getType()+strUserNum;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.getId();
     }
     
     /**
