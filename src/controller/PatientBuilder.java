@@ -66,6 +66,11 @@ public class PatientBuilder implements IBuilder, java.io.Serializable{
         this.age = age;
     }
     
+    public String GetName()
+    {
+        return this.firstName + " " + this.surname;
+    }
+    
     @Override
     public Patient build()
     {

@@ -54,6 +54,26 @@ public class DataModel implements java.io.Serializable{
         this.requests = data.requests;
     }
     
+    public PatientBuilder getRequest()
+    {
+        try{
+            return requests.get(0);
+        }catch(IndexOutOfBoundsException e)
+        {
+            return null;
+        }
+    }
+    
+    public PatientBuilder popRequest()
+    {
+        try{
+            return requests.remove(0);
+        }catch(IndexOutOfBoundsException e)
+        {
+            return null;
+        }
+    }
+    
     /**
      * Singleton method for this class
      * 

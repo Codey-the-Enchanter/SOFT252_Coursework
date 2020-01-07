@@ -126,6 +126,7 @@ public class Frontend extends javax.swing.JFrame {
         btnLogin.setEnabled(false);
         btnLogout.setEnabled(true);
         btnAdminCreateMenu.setEnabled(false);
+        btnRequestAccount.setEnabled(false);
         txtUserId.setText("");
         txtPassword.setText("");
         displayUser(this.currentUser);
@@ -139,6 +140,7 @@ public class Frontend extends javax.swing.JFrame {
         btnLogout.setEnabled(false);
         btnLogin.setEnabled(true);
         btnAdminCreateMenu.setEnabled(true);
+        btnRequestAccount.setEnabled(true);
         clearUserDisplay();
     }
     
@@ -158,7 +160,16 @@ public class Frontend extends javax.swing.JFrame {
         txtaInfoAddress.setText("");
     }
 
-    
+    private void updateRequestDisplay()
+    {
+        DataModel data = DataModel.getInstance();
+        
+        PatientBuilder request = data.getRequest();
+        if (request == null)
+            return;
+        
+        txtRequestAproval.setText(request.GetName());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -209,6 +220,12 @@ public class Frontend extends javax.swing.JFrame {
         DoctorView = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         SecretaryView = new javax.swing.JPanel();
+        PatientAccountAproval = new javax.swing.JPanel();
+        btnFetchRequest = new javax.swing.JButton();
+        txtRequestAproval = new javax.swing.JTextField();
+        btnAproveRequest = new javax.swing.JButton();
+        btnRejectRequest = new javax.swing.JButton();
+        txtPatientIdOutput = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         PatientView = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -285,7 +302,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         BlankLayout.setVerticalGroup(
             BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
 
         mainPanel.add(Blank, "Blank");
@@ -571,7 +588,7 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AdminViewLayout.createSequentialGroup()
                         .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 195, Short.MAX_VALUE))
+                        .addGap(0, 205, Short.MAX_VALUE))
                     .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -593,7 +610,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         DoctorViewLayout.setVerticalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
             .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(DoctorViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -603,27 +620,88 @@ public class Frontend extends javax.swing.JFrame {
 
         mainPanel.add(DoctorView, "DoctorView");
 
-        jLabel5.setText("Secretary Mode");
+        PatientAccountAproval.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        btnFetchRequest.setText("Get Request");
+        btnFetchRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFetchRequestActionPerformed(evt);
+            }
+        });
+
+        txtRequestAproval.setEditable(false);
+
+        btnAproveRequest.setText("Aprove");
+        btnAproveRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAproveRequestActionPerformed(evt);
+            }
+        });
+
+        btnRejectRequest.setText("Reject");
+        btnRejectRequest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejectRequestActionPerformed(evt);
+            }
+        });
+
+        txtPatientIdOutput.setEditable(false);
+
+        jLabel5.setText("Added as: ");
+
+        javax.swing.GroupLayout PatientAccountAprovalLayout = new javax.swing.GroupLayout(PatientAccountAproval);
+        PatientAccountAproval.setLayout(PatientAccountAprovalLayout);
+        PatientAccountAprovalLayout.setHorizontalGroup(
+            PatientAccountAprovalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PatientAccountAprovalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PatientAccountAprovalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtRequestAproval, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnFetchRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PatientAccountAprovalLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnRejectRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAproveRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PatientAccountAprovalLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPatientIdOutput)))
+                .addContainerGap())
+        );
+        PatientAccountAprovalLayout.setVerticalGroup(
+            PatientAccountAprovalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PatientAccountAprovalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnFetchRequest)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtRequestAproval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PatientAccountAprovalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAproveRequest)
+                    .addComponent(btnRejectRequest))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PatientAccountAprovalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPatientIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout SecretaryViewLayout = new javax.swing.GroupLayout(SecretaryView);
         SecretaryView.setLayout(SecretaryViewLayout);
         SecretaryViewLayout.setHorizontalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 645, Short.MAX_VALUE)
-            .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(SecretaryViewLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel5)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(SecretaryViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PatientAccountAproval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(422, Short.MAX_VALUE))
         );
         SecretaryViewLayout.setVerticalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
-            .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(SecretaryViewLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel5)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(SecretaryViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PatientAccountAproval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
         );
 
         mainPanel.add(SecretaryView, "SecretaryView");
@@ -643,7 +721,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         PatientViewLayout.setVerticalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
             .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PatientViewLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -756,7 +834,7 @@ public class Frontend extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(newAdminInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(235, Short.MAX_VALUE))
+                .addContainerGap(245, Short.MAX_VALUE))
         );
 
         mainPanel.add(AdminCreate, "AdminCreate");
@@ -847,7 +925,7 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRequestPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel29))
-                .addContainerGap(318, Short.MAX_VALUE))
+                .addContainerGap(328, Short.MAX_VALUE))
         );
 
         mainPanel.add(AccountRequest, "AccountRequest");
@@ -1163,6 +1241,39 @@ public class Frontend extends javax.swing.JFrame {
         data.addAccountRequest(request);
     }//GEN-LAST:event_btnMakeAccountRequestActionPerformed
 
+    private void btnFetchRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFetchRequestActionPerformed
+        updateRequestDisplay();
+    }//GEN-LAST:event_btnFetchRequestActionPerformed
+
+    private void btnAproveRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAproveRequestActionPerformed
+        DataModel data = DataModel.getInstance();
+        
+        PatientBuilder request = data.popRequest();
+        if (request == null)
+            return;
+        
+        request.setUserNum(data.getHighestUserNum('P')+1);
+        
+        Patient patient = request.build();
+        
+        data.addUser(patient);
+        
+        txtPatientIdOutput.setText(patient.getId());
+        
+        //Now that we have added the new user. update the display
+        updateRequestDisplay();
+    }//GEN-LAST:event_btnAproveRequestActionPerformed
+
+    private void btnRejectRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectRequestActionPerformed
+        DataModel data = DataModel.getInstance();
+        
+        if(data.popRequest() == null)
+            return;
+        
+        //Now that we have removed the offending request. update the display
+        updateRequestDisplay();
+    }//GEN-LAST:event_btnRejectRequestActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1213,17 +1324,21 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JPanel Blank;
     private javax.swing.JPanel DoctorView;
     private javax.swing.JPanel LoginInputs;
+    private javax.swing.JPanel PatientAccountAproval;
     private javax.swing.JPanel PatientView;
     private javax.swing.JPanel SecretaryView;
     private javax.swing.JPanel UserInfo;
     private javax.swing.JButton btnAdminCreateMenu;
     private javax.swing.JButton btnAdminCreator;
     private javax.swing.JButton btnAdminFeedbackAdd;
+    private javax.swing.JButton btnAproveRequest;
     private javax.swing.JButton btnCreateAdminAccount;
+    private javax.swing.JButton btnFetchRequest;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMakeAccountRequest;
     private javax.swing.JButton btnRefreshAdminCmb;
+    private javax.swing.JButton btnRejectRequest;
     private javax.swing.JButton btnRequestAccount;
     private javax.swing.ButtonGroup btngrpAdminCreating;
     /*
@@ -1291,8 +1406,10 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JTextField txtInfoSurname;
     private javax.swing.JTextField txtInfoUserId;
     private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtPatientIdOutput;
     private javax.swing.JTextField txtRequestAddress;
     private javax.swing.JFormattedTextField txtRequestAge;
+    private javax.swing.JTextField txtRequestAproval;
     private javax.swing.JTextField txtRequestFirstName;
     private javax.swing.JPasswordField txtRequestPassword;
     private javax.swing.JTextField txtRequestSurname;
