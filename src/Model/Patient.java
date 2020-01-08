@@ -12,6 +12,7 @@ package Model;
 public class Patient extends User{
     private String gender = "UNDEFINED";
     private Integer age = 0;
+    private Appointment appointment;
     
     public Patient(Integer usernum ,String firstname ,String surname, String address, String password, String gender, Integer age)
     {
@@ -44,5 +45,15 @@ public class Patient extends User{
     public void setAge(Integer age)
     {
         this.age = age;
+    }
+    
+    public Appointment getAppointment()
+    {
+        return this.appointment;
+    }
+    
+    public void setAppointment(Appointment appointment)
+    {
+        this.appointment = appointment;
     }
 }

@@ -9,6 +9,44 @@ package Model;
  *
  * @author Matthew
  */
-public class Appointment {
+public class Appointment implements java.io.Serializable{
+    private Doctor doctor;
+    private String dateTime;
+    private boolean accepted = false;
     
+    public Appointment(Doctor doctor, String datetime)
+    {
+        this.doctor = doctor;
+        this.dateTime = datetime;
+    }
+    
+    public Doctor getDoctor()
+    {
+        return this.doctor;
+    }
+    
+    public void setDoctor(Doctor doc)
+    {
+        this.doctor = doc;
+    }
+    
+    public String getDateTime()
+    {
+        return this.dateTime;
+    }
+    
+    public void setDateTime(String datetime)
+    {
+        this.dateTime = datetime;
+    }
+    
+    public boolean getAccepted()
+    {
+        return this.accepted;
+    }
+    
+    public void setAccepted(boolean accepted)
+    {
+        this.accepted = accepted;
+    }
 }
