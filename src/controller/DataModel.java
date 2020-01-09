@@ -18,21 +18,22 @@ public class DataModel implements java.io.Serializable{
     
     private static DataModel instance;
     
-    private ArrayList<User> users = new ArrayList<User>();
-    
     /**
      * Account Requests are stored as PatientBuilder objects.
      * When the request is approved, all we have to do is build
      * the object.
      */
-    private ArrayList<PatientBuilder> requests = new ArrayList<PatientBuilder>();
+    private ArrayList<PatientBuilder> requests = new ArrayList<>();
+    private ArrayList<Medicine> meds = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     
     /**
     * Data is mirrored into this class to be serialized
     */
     private class DataPackage implements java.io.Serializable{
-        public ArrayList<User> users = new ArrayList<User>();
-        private ArrayList<PatientBuilder> requests = new ArrayList<PatientBuilder>();
+        public ArrayList<User> users = new ArrayList<>();
+        public ArrayList<PatientBuilder> requests = new ArrayList<>();
+        public ArrayList<Medicine> meds = new ArrayList<>();
     }
     
     /**
@@ -45,6 +46,7 @@ public class DataModel implements java.io.Serializable{
         DataPackage data = new DataPackage();
         data.users = this.users;
         data.requests = this.requests;
+        data.meds = this.meds;
         return data;
     }
     
@@ -52,6 +54,7 @@ public class DataModel implements java.io.Serializable{
     {
         this.users = data.users;
         this.requests = data.requests;
+        this.meds = data.meds;
     }
     
     public PatientBuilder getRequest()
@@ -72,6 +75,16 @@ public class DataModel implements java.io.Serializable{
         {
             return null;
         }
+    }
+    
+    public ArrayList<Medicine> getMedicine()
+    {
+        return this.meds;
+    }
+    
+    public void addMedicine(Medicine medicine)
+    {
+        this.meds.add(medicine);
     }
     
     /**

@@ -28,12 +28,15 @@ public class Frontend extends javax.swing.JFrame {
     
     private void switchPanelDoctor()
     {
+        populateMedicineCombobox();
+        populateUserComboboxGeneric(cmbPrescriptionCreatePatient, 'P');
+        
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "DoctorView");
     }
     private void switchPanelAdmin()
     {
-        populateComboboxAdminAccountSelector();
+        populateUserComboboxGeneric(cmbAdminAccountSelector, 'D');
         
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "AdminView");
@@ -47,6 +50,7 @@ public class Frontend extends javax.swing.JFrame {
     }
     private void switchPanelPatient()
     {
+        updatePatientDisplay();
         populateUserComboboxGeneric(cbmPatientSelectDoctor, 'D');
         CardLayout card = (CardLayout)mainPanel.getLayout();
         card.show(mainPanel, "PatientView");
@@ -69,12 +73,7 @@ public class Frontend extends javax.swing.JFrame {
         card.show(mainPanel, "AccountRequest");
     }
     
-    private void populateComboboxAdminAccountSelector()
-    {
-        populateUserComboboxGeneric(cmbAdminAccountSelector, 'D');
-    }
-    
-    public void populateComboboxAdminFeedback()
+    private void populateComboboxAdminFeedback()
     {
         DataModel data = DataModel.getInstance();
         
@@ -93,7 +92,7 @@ public class Frontend extends javax.swing.JFrame {
         }
     }
     
-    public void populateUserComboboxGeneric(JComboBox box, char type)
+    private void populateUserComboboxGeneric(JComboBox box, char type)
     {
         DataModel data = DataModel.getInstance();
         
@@ -102,6 +101,18 @@ public class Frontend extends javax.swing.JFrame {
         for (User u: data.getTypedUsers(type))
         {
             box.addItem(u);
+        }
+    }
+    
+    private void populateMedicineCombobox()
+    {
+        DataModel data = DataModel.getInstance();
+        
+        cmbPrescriptionCreate.removeAllItems();
+        
+        for (Medicine med: data.getMedicine())
+        {
+            cmbPrescriptionCreate.addItem(med);
         }
     }
     
@@ -174,6 +185,21 @@ public class Frontend extends javax.swing.JFrame {
         
         txtRequestAproval.setText(request.GetName());
     }
+    
+    private void updatePatientDisplay()
+    {
+        Patient patient = (Patient) currentUser;
+        Prescription prescription = patient.getPrescription();
+        Appointment appointment = patient.getAppointment();
+        if (prescription != null)
+        {
+            Medicine meds = prescription.getMedicine();
+            txtPatientDisplayPrescription.setText(meds.getName() + " Dosage: " + prescription.getDosage());
+        }
+        
+        if (appointment != null)
+            txtPatientDisplayAppointment.setText(appointment.getDoctor().getSurname() + " At " + appointment.getDateTime());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,7 +248,18 @@ public class Frontend extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         cmbSelectFeedback = new javax.swing.JComboBox<Feedback>();
         DoctorView = new javax.swing.JPanel();
+        PrescribeMeds = new javax.swing.JPanel();
+        cmbPrescriptionCreate = new javax.swing.JComboBox<Medicine>();
+        cmbPrescriptionCreatePatient = new javax.swing.JComboBox<User>();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        txtDosageInput = new javax.swing.JTextField();
+        btnAddPrescription = new javax.swing.JButton();
+        CreateMeds = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        txtMedicineName = new javax.swing.JTextField();
+        btnCreateMedicine = new javax.swing.JButton();
         SecretaryView = new javax.swing.JPanel();
         PatientAccountAproval = new javax.swing.JPanel();
         btnFetchRequest = new javax.swing.JButton();
@@ -243,6 +280,11 @@ public class Frontend extends javax.swing.JFrame {
         cbmPatientSelectDoctor = new javax.swing.JComboBox<User>();
         jButton1 = new javax.swing.JButton();
         txtAppointmentSetStatus = new javax.swing.JTextField();
+        PatientDisplay = new javax.swing.JPanel();
+        txtPatientDisplayAppointment = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        txtPatientDisplayPrescription = new javax.swing.JTextField();
         AdminCreate = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtAdminAccountIdOutput = new javax.swing.JTextField();
@@ -316,7 +358,7 @@ public class Frontend extends javax.swing.JFrame {
         );
         BlankLayout.setVerticalGroup(
             BlankLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+            .addGap(0, 536, Short.MAX_VALUE)
         );
 
         mainPanel.add(Blank, "Blank");
@@ -602,34 +644,131 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AdminViewLayout.createSequentialGroup()
                         .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 212, Short.MAX_VALUE))
+                        .addGap(0, 244, Short.MAX_VALUE))
                     .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         mainPanel.add(AdminView, "AdminView");
 
-        jLabel4.setText("Doctor Mode");
+        PrescribeMeds.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel30.setText("Medicine: ");
+
+        jLabel31.setText("Patient: ");
+
+        jLabel32.setText("Dosage (Floating point number) : ");
+
+        btnAddPrescription.setText("Add Prescription");
+        btnAddPrescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddPrescriptionActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PrescribeMedsLayout = new javax.swing.GroupLayout(PrescribeMeds);
+        PrescribeMeds.setLayout(PrescribeMedsLayout);
+        PrescribeMedsLayout.setHorizontalGroup(
+            PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                .addGroup(PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                        .addGroup(PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                                        .addComponent(jLabel31)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(cmbPrescriptionCreatePatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                                        .addComponent(jLabel30)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbPrescriptionCreate, 0, 178, Short.MAX_VALUE))))
+                            .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel32)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDosageInput, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 1, Short.MAX_VALUE))
+                    .addComponent(btnAddPrescription, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        PrescribeMedsLayout.setVerticalGroup(
+            PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PrescribeMedsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel30)
+                    .addComponent(cmbPrescriptionCreate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(cmbPrescriptionCreatePatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PrescribeMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel32)
+                    .addComponent(txtDosageInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAddPrescription)
+                .addContainerGap(192, Short.MAX_VALUE))
+        );
+
+        CreateMeds.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel4.setText("Medicine Name: ");
+
+        btnCreateMedicine.setText("Create Medicine");
+        btnCreateMedicine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateMedicineActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout CreateMedsLayout = new javax.swing.GroupLayout(CreateMeds);
+        CreateMeds.setLayout(CreateMedsLayout);
+        CreateMedsLayout.setHorizontalGroup(
+            CreateMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CreateMedsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(CreateMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCreateMedicine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(CreateMedsLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMedicineName)))
+                .addContainerGap())
+        );
+        CreateMedsLayout.setVerticalGroup(
+            CreateMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CreateMedsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(CreateMedsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtMedicineName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCreateMedicine))
+        );
 
         javax.swing.GroupLayout DoctorViewLayout = new javax.swing.GroupLayout(DoctorView);
         DoctorView.setLayout(DoctorViewLayout);
         DoctorViewLayout.setHorizontalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 645, Short.MAX_VALUE)
-            .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(DoctorViewLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(DoctorViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CreateMeds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PrescribeMeds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(380, Short.MAX_VALUE))
         );
         DoctorViewLayout.setVerticalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
-            .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(DoctorViewLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(DoctorViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PrescribeMeds, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CreateMeds, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         mainPanel.add(DoctorView, "DoctorView");
@@ -765,7 +904,7 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PatientAccountAproval, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(353, Short.MAX_VALUE))
+                .addContainerGap(385, Short.MAX_VALUE))
         );
 
         mainPanel.add(SecretaryView, "SecretaryView");
@@ -821,13 +960,55 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        PatientDisplay.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtPatientDisplayAppointment.setEditable(false);
+
+        jLabel33.setText("Appointment with doctor:");
+
+        jLabel34.setText("Prescription: ");
+
+        txtPatientDisplayPrescription.setEditable(false);
+
+        javax.swing.GroupLayout PatientDisplayLayout = new javax.swing.GroupLayout(PatientDisplay);
+        PatientDisplay.setLayout(PatientDisplayLayout);
+        PatientDisplayLayout.setHorizontalGroup(
+            PatientDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PatientDisplayLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PatientDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPatientDisplayAppointment)
+                    .addGroup(PatientDisplayLayout.createSequentialGroup()
+                        .addGroup(PatientDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel33)
+                            .addComponent(jLabel34))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtPatientDisplayPrescription))
+                .addContainerGap())
+        );
+        PatientDisplayLayout.setVerticalGroup(
+            PatientDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PatientDisplayLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(jLabel33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPatientDisplayAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPatientDisplayPrescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout PatientViewLayout = new javax.swing.GroupLayout(PatientView);
         PatientView.setLayout(PatientViewLayout);
         PatientViewLayout.setHorizontalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PatientViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PatientCreateAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(PatientDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PatientCreateAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(399, Short.MAX_VALUE))
         );
         PatientViewLayout.setVerticalGroup(
@@ -835,7 +1016,9 @@ public class Frontend extends javax.swing.JFrame {
             .addGroup(PatientViewLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PatientCreateAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PatientDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(293, Short.MAX_VALUE))
         );
 
         mainPanel.add(PatientView, "PatientView");
@@ -943,7 +1126,7 @@ public class Frontend extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addComponent(txtAdminAccountIdOutput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(newAdminInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(252, Short.MAX_VALUE))
+                .addContainerGap(284, Short.MAX_VALUE))
         );
 
         mainPanel.add(AdminCreate, "AdminCreate");
@@ -1034,7 +1217,7 @@ public class Frontend extends javax.swing.JFrame {
                 .addGroup(AccountRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRequestPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel29))
-                .addContainerGap(335, Short.MAX_VALUE))
+                .addContainerGap(367, Short.MAX_VALUE))
         );
 
         mainPanel.add(AccountRequest, "AccountRequest");
@@ -1301,7 +1484,7 @@ public class Frontend extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnRefreshAdminCmbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshAdminCmbActionPerformed
-        populateComboboxAdminAccountSelector();
+        populateUserComboboxGeneric(cmbAdminAccountSelector, 'D');
     }//GEN-LAST:event_btnRefreshAdminCmbActionPerformed
 
     private void btnAdminFeedbackAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminFeedbackAddActionPerformed
@@ -1408,6 +1591,34 @@ public class Frontend extends javax.swing.JFrame {
         txtAppointmentAproveStatus.setText("Approved!");
     }//GEN-LAST:event_btnAproveAppointmentActionPerformed
 
+    private void btnCreateMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateMedicineActionPerformed
+        Medicine med = new Medicine(txtMedicineName.getText());
+        
+        DataModel data = DataModel.getInstance();
+        
+        data.addMedicine(med);
+        populateMedicineCombobox();
+    }//GEN-LAST:event_btnCreateMedicineActionPerformed
+
+    private void btnAddPrescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPrescriptionActionPerformed
+        Medicine meds = (Medicine)cmbPrescriptionCreate.getSelectedItem();
+        if (meds == null)
+            return;//No valid Medicine. Abort.
+        Float dosage;
+        try{
+            dosage = Float.parseFloat(txtDosageInput.getText());
+        }catch (NumberFormatException e)
+        {
+            return;//dosage was invalid. Abort.
+        }
+        
+        Prescription prescription = new Prescription(meds, dosage);
+        
+        Patient patient = (Patient) cmbPrescriptionCreatePatient.getSelectedItem();
+        
+        patient.setPrescription(prescription);
+    }//GEN-LAST:event_btnAddPrescriptionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1456,19 +1667,24 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JPanel AdminView;
     private javax.swing.JPanel AdminViewFeedback;
     private javax.swing.JPanel Blank;
+    private javax.swing.JPanel CreateMeds;
     private javax.swing.JPanel DoctorView;
     private javax.swing.JPanel LoginInputs;
     private javax.swing.JPanel PatientAccountAproval;
     private javax.swing.JPanel PatientCreateAppointment;
+    private javax.swing.JPanel PatientDisplay;
     private javax.swing.JPanel PatientView;
+    private javax.swing.JPanel PrescribeMeds;
     private javax.swing.JPanel SecretaryView;
     private javax.swing.JPanel UserInfo;
+    private javax.swing.JButton btnAddPrescription;
     private javax.swing.JButton btnAdminCreateMenu;
     private javax.swing.JButton btnAdminCreator;
     private javax.swing.JButton btnAdminFeedbackAdd;
     private javax.swing.JButton btnAproveAppointment;
     private javax.swing.JButton btnAproveRequest;
     private javax.swing.JButton btnCreateAdminAccount;
+    private javax.swing.JButton btnCreateMedicine;
     private javax.swing.JButton btnFetchRequest;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
@@ -1489,6 +1705,14 @@ public class Frontend extends javax.swing.JFrame {
     me edit the declaration.
     */
     private javax.swing.JComboBox<User> cmbAdminAccountSelector;
+    /*
+    private javax.swing.JComboBox<String> cmbPrescriptionCreate;
+    */
+    private javax.swing.JComboBox<Medicine> cmbPrescriptionCreate;
+    /*
+    private javax.swing.JComboBox<String> cmbPrescriptionCreatePatient;
+    */
+    private javax.swing.JComboBox<User> cmbPrescriptionCreatePatient;
     private javax.swing.JComboBox<String> cmbRequestGender;
     private javax.swing.JComboBox<String> cmbSecSelectPatient;
     /*
@@ -1519,6 +1743,11 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1549,10 +1778,14 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JTextField txtAppointmentDateTime;
     private javax.swing.JTextField txtAppointmentDateTimeDispaly;
     private javax.swing.JTextField txtAppointmentSetStatus;
+    private javax.swing.JTextField txtDosageInput;
     private javax.swing.JTextField txtInfoFirstName;
     private javax.swing.JTextField txtInfoSurname;
     private javax.swing.JTextField txtInfoUserId;
+    private javax.swing.JTextField txtMedicineName;
     private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtPatientDisplayAppointment;
+    private javax.swing.JTextField txtPatientDisplayPrescription;
     private javax.swing.JTextField txtPatientIdOutput;
     private javax.swing.JTextField txtRequestAddress;
     private javax.swing.JFormattedTextField txtRequestAge;
