@@ -247,6 +247,8 @@ public class Frontend extends javax.swing.JFrame {
         txtaAdminFeedbackOutComment = new javax.swing.JTextArea();
         jLabel24 = new javax.swing.JLabel();
         cmbSelectFeedback = new javax.swing.JComboBox<Feedback>();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
         DoctorView = new javax.swing.JPanel();
         PrescribeMeds = new javax.swing.JPanel();
         cmbPrescriptionCreate = new javax.swing.JComboBox<Medicine>();
@@ -260,6 +262,7 @@ public class Frontend extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtMedicineName = new javax.swing.JTextField();
         btnCreateMedicine = new javax.swing.JButton();
+        jLabel37 = new javax.swing.JLabel();
         SecretaryView = new javax.swing.JPanel();
         PatientAccountAproval = new javax.swing.JPanel();
         btnFetchRequest = new javax.swing.JButton();
@@ -273,6 +276,8 @@ public class Frontend extends javax.swing.JFrame {
         txtAppointmentDateTimeDispaly = new javax.swing.JTextField();
         btnAproveAppointment = new javax.swing.JButton();
         txtAppointmentAproveStatus = new javax.swing.JTextField();
+        jLabel38 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
         PatientView = new javax.swing.JPanel();
         PatientCreateAppointment = new javax.swing.JPanel();
         txtAppointmentDateTime = new javax.swing.JTextField();
@@ -285,6 +290,8 @@ public class Frontend extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         txtPatientDisplayPrescription = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
         AdminCreate = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         txtAdminAccountIdOutput = new javax.swing.JTextField();
@@ -626,27 +633,40 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel35.setText("Create Users:");
+
+        jLabel36.setText("View/Add Feedback:");
+
         javax.swing.GroupLayout AdminViewLayout = new javax.swing.GroupLayout(AdminView);
         AdminView.setLayout(AdminViewLayout);
         AdminViewLayout.setHorizontalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel35))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AdminViewLayout.createSequentialGroup()
+                        .addComponent(jLabel36)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         AdminViewLayout.setVerticalGroup(
             AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminViewLayout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel35)
+                    .addComponent(jLabel36))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(AdminViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AdminViewLayout.createSequentialGroup()
                         .addComponent(AdminCreatorInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 244, Short.MAX_VALUE))
-                    .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addContainerGap(235, Short.MAX_VALUE))
+                    .addComponent(AdminAccountViewer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         mainPanel.add(AdminView, "AdminView");
@@ -711,7 +731,7 @@ public class Frontend extends javax.swing.JFrame {
                     .addComponent(txtDosageInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAddPrescription)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
 
         CreateMeds.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -750,21 +770,27 @@ public class Frontend extends javax.swing.JFrame {
                 .addComponent(btnCreateMedicine))
         );
 
+        jLabel37.setText("Create Prescription:");
+
         javax.swing.GroupLayout DoctorViewLayout = new javax.swing.GroupLayout(DoctorView);
         DoctorView.setLayout(DoctorViewLayout);
         DoctorViewLayout.setHorizontalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DoctorViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(CreateMeds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PrescribeMeds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(CreateMeds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(PrescribeMeds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel37))
                 .addContainerGap(380, Short.MAX_VALUE))
         );
         DoctorViewLayout.setVerticalGroup(
             DoctorViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DoctorViewLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PrescribeMeds, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(CreateMeds, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -883,8 +909,12 @@ public class Frontend extends javax.swing.JFrame {
                 .addComponent(btnAproveAppointment)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtAppointmentAproveStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
+
+        jLabel38.setText("Process patient account requests:");
+
+        jLabel39.setText("Aprove Appointment Requests:");
 
         javax.swing.GroupLayout SecretaryViewLayout = new javax.swing.GroupLayout(SecretaryView);
         SecretaryView.setLayout(SecretaryViewLayout);
@@ -892,19 +922,29 @@ public class Frontend extends javax.swing.JFrame {
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SecretaryViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PatientAccountAproval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PatientAccountAproval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel38))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel39)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(232, Short.MAX_VALUE))
         );
         SecretaryViewLayout.setVerticalGroup(
             SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SecretaryViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PatientAccountAproval, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(385, Short.MAX_VALUE))
+                .addGroup(SecretaryViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(SecretaryViewLayout.createSequentialGroup()
+                        .addComponent(jLabel39)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(SecretaryViewLayout.createSequentialGroup()
+                        .addComponent(jLabel38)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(PatientAccountAproval, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
 
         mainPanel.add(SecretaryView, "SecretaryView");
@@ -982,7 +1022,7 @@ public class Frontend extends javax.swing.JFrame {
                         .addGroup(PatientDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel33)
                             .addComponent(jLabel34))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 90, Short.MAX_VALUE))
                     .addComponent(txtPatientDisplayPrescription))
                 .addContainerGap())
         );
@@ -1000,25 +1040,35 @@ public class Frontend extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel40.setText("Request Appointment:");
+
+        jLabel41.setText("View Appointment:");
+
         javax.swing.GroupLayout PatientViewLayout = new javax.swing.GroupLayout(PatientView);
         PatientView.setLayout(PatientViewLayout);
         PatientViewLayout.setHorizontalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PatientViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(PatientDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PatientCreateAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PatientDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PatientCreateAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel40)
+                    .addComponent(jLabel41))
                 .addContainerGap(399, Short.MAX_VALUE))
         );
         PatientViewLayout.setVerticalGroup(
             PatientViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PatientViewLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel40)
+                .addGap(7, 7, 7)
                 .addComponent(PatientCreateAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel41)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PatientDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addContainerGap(257, Short.MAX_VALUE))
         );
 
         mainPanel.add(PatientView, "PatientView");
@@ -1748,7 +1798,14 @@ public class Frontend extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
